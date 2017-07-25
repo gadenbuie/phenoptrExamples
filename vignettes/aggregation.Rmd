@@ -1,0 +1,142 @@
+---
+title: "Aggregating Distance Metrics"
+author: "Kent Johnson"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    df_print: kable
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Aggregating Distance Metrics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo=FALSE,include=FALSE,message=FALSE}
+suppressPackageStartupMessages(library(tidyverse))
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+```
+
+<style type="text/css">
+img { 
+  border: none;
+}
+table {
+    width: auto !important;
+}
+</style>
+
+This vignette uses the `phenoptrExamples` sample data
+and functions from the [tidyverse](http://tidyverse.org/) to demonstrate
+reading and processing cell seg data from multiple fields and samples.
+
+## Read multiple files
+
+Use `list_cell_seg_files` and `purrr::map_df` to read all
+cell seg files in a single directory into a single `data_frame`. The result is
+similar to reading a table merged in inForm.
+
+### Find cell seg files
+
+`list_cell_seg_files` takes a directory path as an argument and 
+returns a list of paths to all the `cell_seg_data.txt`
+files in a directory.
+
+```{r}
+library(phenoptr)
+library(tidyverse)
+base_path = system.file("extdata", "samples", package = "phenoptrExamples")
+paths = list_cell_seg_files(base_path)
+length(paths)
+paths[1]
+```
+
+### Read and combine files
+
+`purrr::map_df` applies `read_cell_seg_data` to each path in `paths`. The
+`data_frame`s returned from each
+call to `read_cell_seg_data` are combined row-wise to create a single
+merged `data_frame`. `table` is one way to summarize the data.
+
+```{r}
+csd = purrr::map_df(paths, read_cell_seg_data)
+dim(csd)
+table(csd$`Sample Name`, csd$Phenotype)
+table(csd$`Slide ID`, csd$Phenotype)
+```
+
+## Compute on merged data
+
+### Add distance columns
+
+Nearest-neighbor distances must be computed per-sample because the X/Y
+coordinates reported in cell seg data files are all relative to the top-left
+of the sample.
+
+Use `dplyr::group_by` to aggregate across subsets of a full
+data set. In this case, we want to group by `Sample Name`. Within each
+group, we want to call `find_nearest_distance` to compute the distance
+columns and `dplyr::bind_cols` to combine them with the original data.
+
+```{r}
+# Use the same list of phenotypes for each sample
+phenos = unique(csd$Phenotype)
+csd = csd %>%
+  dplyr::group_by(`Sample Name`) %>%
+  dplyr::do(dplyr::bind_cols(., find_nearest_distance(., phenos)))
+dim(csd)
+tail(names(csd), 5)
+```
+
+### Average distance per sample
+
+Use `dplyr:group_by` to compute summary statistics for all fields
+in a slide. The next example computes the average distance from a tumor cell
+(`CK+`) to the nearest macrophage (`CD68+`), with the averages computed
+per `Slide ID`.
+
+```{r}
+csd %>% dplyr::group_by(`Slide ID`) %>% 
+  dplyr::filter(Phenotype=='CK+') %>% # Only tumor cells
+  dplyr::summarize(mean_dist_to_CD68=round(mean(`Distance to CD68+`), 2))
+```
+
+## Aggregate `count_within` across samples
+
+### Compute counts and averages
+
+Use `count_within_batch` to count cells within a radius for 
+multiple tissue categories, phenotypes and fields. 
+This example counts `CK+` cells with a `CD8+` cell within 10 or 25 microns,
+and `CK+` cells with a `CD68+` cell within 10 or 25 microns.
+
+```{r}
+base_path = system.file("extdata", "samples", package = "phenoptrExamples")
+pairs = list(c('CK+', 'CD8+'),
+             c('CK+', 'CD68+'))
+radius = c(10, 25)
+counts = count_within_batch(base_path, pairs, radius) %>% 
+  dplyr::select(-source, -category) # Remove unneeded columns
+```
+
+### Aggregate counts and means per sample
+
+Aggregating `from_count`, `to_count` and `from_with`
+across samples is straighforward, it only requires
+simple sums. Aggregating `within_mean` requires computing the underlying 
+count of cells within the radius, summing, and computing a new mean.
+
+(Note: the value of `from_count * within_mean` is not reported by
+`count_with` because it may count cells multiple times.)
+
+```{r}
+counts_per_sample = counts %>% dplyr::group_by(slide_id, from, to, radius) %>% 
+    summarize(from_count=sum(from_count),
+              to_count=sum(to_count),
+              from_with=sum(from_with),
+              within=sum(from_count*within_mean),
+              within_mean=within/from_count) %>%
+  ungroup %>% select(-within)
+counts_per_sample
+```
+

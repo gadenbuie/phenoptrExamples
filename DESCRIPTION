@@ -3,22 +3,24 @@ Type: Package
 Title: Example Data for phenoptr
 Version: 0.1.0.9000
 Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
+Maintainer: Maintainer: Kent Johnson <kent.johnson@perkinelmer.com>
 Description: Data sets and example code which demonstrate
     the use of the phenoptr package.
-Imports:
-    knitr
 Depends: R (>= 3.1.0)
 License: Zlib | file LICENSE
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 6.0.1
 Remotes: PerkinElmer/phenoptr
-Suggests: phenoptr
+Suggests: 
+    dplyr,
+    knitr,
+    phenoptr,
+    purrrr,
+    rmarkdown
 VignetteBuilder: knitr
 URL: https://github.com/PerkinElmer/phenoptrExamples
 BugReports: https://github.com/PerkinElmer/phenoptrExamples/issues
-Maintainer: Kent Johnson <kent.johnson@perkinelmer.com>
 Authors@R: c(
     person("Kent", "Johnson", role = c("aut", "cre"),
            email = "kent.johnson@perkinelmer.com"),
