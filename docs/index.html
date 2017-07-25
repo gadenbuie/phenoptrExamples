@@ -37,6 +37,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/aggregation.html">Aggregating Distance Metrics</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -56,20 +68,83 @@
       
       </header><div class="row">
   <div class="contents col-md-9">
-    <div id="phenoptrexamples--example-data-for-use-with-the-phenoptr-package" class="section level1">
+    <div id="phenoptrexamples---example-data-for-use-with-the-phenoptr-package" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#phenoptrexamples--example-data-for-use-with-the-phenoptr-package" class="anchor"></a>phenoptrExamples -Example data for use with the <code>phenoptr</code> package</h1></div>
+<a href="#phenoptrexamples---example-data-for-use-with-the-phenoptr-package" class="anchor"></a>phenoptrExamples - Example data for use with the <code>phenoptr</code> package</h1></div>
+<style type="text/css">
+img { 
+  border: none;
+}
+table {
+    width: auto !important;
+}
+</style>
 <p><code>phenoptrExamples</code> contains data sets and example code which demonstrate the use of the <code>phenoptr</code> package. <code>phenoptr</code> contains functions that make it easier to read and analyze data tables and images created by PerkinElmer’s inForm<sup>®</sup> software.</p>
-<p><code>phenoptr</code> and <code>phenoptrExamples</code> are part of the PerkinElmer Phenoptics™ family of Quantitative Pathology Research Solutions. For more information visit the Phenoptics™ <a href="http://www.perkinelmer.com/cancer-immunology/index.html">home page</a>.</p>
+<p><code>phenoptr</code> and <code>phenoptrExamples</code> are part of the PerkinElmer Phenoptics™ family of Quantitative Pathology Research Solutions. For more information visit the Phenoptics™ <a href="http://www.perkinelmer.com/cancer%7Cimmunology/index.html">home page</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>Installation is from GitHub:</p>
 <pre><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github"># install.packages("devtools")
 devtools::install_github("PerkinElmer/phenoptrExamples", build_vignettes=TRUE)</a></code></pre>
-<div id="package-summary" class="section level3">
+<div id="package-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#package-summary" class="anchor"></a>Package summary</h3>
+<a href="#package-data" class="anchor"></a>Package data</h3>
+<p><code>phenoptrExamples</code> contains selected inForm output from nine images taken from three samples of lung cancer tissue.</p>
+<p>The tissue was stained with DAPI counterstain and Opal™ stains and imaged on a Vectra® Polaris™ Automated Quantitative Pathology Imaging System. The MSI images were unmixed to components, segmented and classified with inForm® image analysis software. The files in the <code>extdata/samples</code> directory are a selection of the inForm output from these images.</p>
+<p>This table shows the Opal stains used, the epitope they were bound to, and the colors used to show the stain in the composite and phenotype views.</p>
+<table class="table">
+<thead><tr class="header">
+<th>Stain</th>
+<th>Epitope</th>
+<th>Composite</th>
+<th>Phenotype</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>DAPI</td>
+<td>Nucleus</td>
+<td>Blue</td>
+<td>N/A</td>
+</tr>
+<tr class="even">
+<td>Opal520</td>
+<td>PDL1</td>
+<td>Red</td>
+<td>N/A</td>
+</tr>
+<tr class="odd">
+<td>Opal540</td>
+<td>CD8</td>
+<td>Yellow</td>
+<td>Yellow</td>
+</tr>
+<tr class="even">
+<td>Opal570</td>
+<td>FoxP3</td>
+<td>Orange</td>
+<td>Orange</td>
+</tr>
+<tr class="odd">
+<td>Opal620</td>
+<td>CD68</td>
+<td>Magenta</td>
+<td>Magenta</td>
+</tr>
+<tr class="even">
+<td>Opal650</td>
+<td>PD1</td>
+<td>Green</td>
+<td>N/A</td>
+</tr>
+<tr class="odd">
+<td>Opal690</td>
+<td>CK</td>
+<td>Cyan</td>
+<td>Cyan</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="full-documentation" class="section level3">
 <h3 class="hasAnchor">
