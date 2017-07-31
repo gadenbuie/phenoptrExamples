@@ -100,7 +100,7 @@ data set. In this case, we want to group by `Sample Name`. Within each
 group, use `dplyr::do` to call `find_nearest_distance` to compute the distance
 columns and `dplyr::bind_cols` to combine them with the original data.
 
-```{r}
+```{r eval=FALSE}
 # Use the same list of phenotypes for each sample
 phenos = unique(csd$Phenotype)
 csd = csd %>%
@@ -109,6 +109,14 @@ csd = csd %>%
 dim(csd)
 tail(names(csd), 5)
 ```
+```{r echo=FALSE}
+# Use cached values
+distances = read_csv('nearest_distance.csv')
+csd = bind_cols(csd, distances)
+dim(csd)
+tail(names(csd), 5)
+```
+
 
 ### Average distance per sample
 
@@ -143,9 +151,9 @@ counts = count_within_batch(base_path, pairs, radius, verbose=FALSE) %>%
 
 glimpse(counts)
 ```
-```{r}
+```{r echo=FALSE}
 # count_with_batch is slow, we cheat by caching the result
-counts = read_csv('count_within_batches.csv')
+counts = read_csv('count_within_batch.csv')
 glimpse(counts)
 ```
 
