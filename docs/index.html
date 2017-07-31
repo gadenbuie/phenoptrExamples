@@ -47,6 +47,9 @@
 <li>
       <a href="articles/aggregation.html">Aggregating Distance Metrics</a>
     </li>
+    <li>
+      <a href="articles/count_touches.html">Aggregating Touch Counts</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -84,7 +87,7 @@ table {
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<p>Installation is from GitHub:</p>
+<p>Installation is from GitHub. Note: this package includes many large files. The entire package contains over 150 MB of data files.</p>
 <pre><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github"># install.packages("devtools")
 devtools::install_github("PerkinElmer/phenoptrExamples", build_vignettes=TRUE)</a></code></pre>
 <div id="package-data" class="section level3">
@@ -92,7 +95,7 @@ devtools::install_github("PerkinElmer/phenoptrExamples", build_vignettes=TRUE)</
 <a href="#package-data" class="anchor"></a>Package data</h3>
 <p><code>phenoptrExamples</code> contains selected inForm output from nine images taken from three samples of lung cancer tissue.</p>
 <p>The tissue was stained with DAPI counterstain and Opal™ stains and imaged on a Vectra® Polaris™ Automated Quantitative Pathology Imaging System. The MSI images were unmixed to components, segmented and classified with inForm® image analysis software. The files in the <code>extdata/samples</code> directory are a selection of the inForm output from these images.</p>
-<p>This table shows the Opal stains used, the epitope they were bound to, and the colors used to show the stain in the composite and phenotype views.</p>
+<p>This table shows the stains used, the epitopes they were bound to, and the colors used to show the stains in the composite and phenotype views.</p>
 <table class="table">
 <thead><tr class="header">
 <th>Stain</th>
@@ -145,11 +148,20 @@ devtools::install_github("PerkinElmer/phenoptrExamples", build_vignettes=TRUE)</
 </tr>
 </tbody>
 </table>
+<p>The sample cell data includes phenotypes <code>CD8+</code> (cytotoxic T cell), <code>CD68+</code> (macrophage), <code>FoxP3+</code> (regulatory T cell), <code>CK+</code> (tumor), and <code>other</code>.</p>
+<p>Four files are included for each image:</p>
+<ul>
+<li>Composite image in JPEG format (<code>composite_image.jpg</code>)</li>
+<li>Cell segmentation data (<code>cell_seg_data.txt</code>)</li>
+<li>Cell segmentation maps (<code>binary_seg_maps.tif</code>)</li>
+<li>Composite with tissue segmentation (<code>image_with_tissue_seg.jpg</code>)</li>
+</ul>
+<p>To see a full list of all of the included files, use the command <code>list.files(system.file("extdata", "samples", package = "phenoptrExamples"))</code>.</p>
 </div>
 <div id="full-documentation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#full-documentation" class="anchor"></a>Full documentation</h3>
-<p>See the <a href="https://perkinelmer.github.io/phenoptrExamples/articles/index.html">Articles</a> and <a href="https://perkinelmer.github.io/phenoptrExamples/reference/index.html">Reference</a> sections of the full documentation for details.</p>
+<p>See the <a href="https://perkinelmer.github.io/phenoptrExamples/articles/index.html">Articles</a> section of the full documentation for more details.</p>
 </div>
 </div>
 </div>

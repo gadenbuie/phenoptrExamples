@@ -47,6 +47,9 @@
 <li>
       <a href="../articles/aggregation.html">Aggregating Distance Metrics</a>
     </li>
+    <li>
+      <a href="../articles/count_touches.html">Aggregating Touch Counts</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -72,7 +75,7 @@
       <h1>Aggregating Distance Metrics</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-07-25</h4>
+            <h4 class="date">2017-07-31</h4>
           </div>
 
     
@@ -87,13 +90,13 @@ table {
 }
 </style>
 <p>This vignette uses the <code>phenoptrExamples</code> sample data and functions from the <a href="http://tidyverse.org/">tidyverse</a> to demonstrate reading and processing cell seg data from multiple fields and samples.</p>
-<div id="read-multiple-files" class="section level2">
+<div id="read-multiple-data-files" class="section level2">
 <h2 class="hasAnchor">
-<a href="#read-multiple-files" class="anchor"></a>Read multiple files</h2>
-<p>Use <code>list_cell_seg_files</code> and <code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map_df</a></code> to read all cell seg files in a single directory into a single <code>data_frame</code>. The result is similar to reading a table merged in inForm.</p>
-<div id="find-cell-seg-files" class="section level3">
+<a href="#read-multiple-data-files" class="anchor"></a>Read multiple data files</h2>
+<p>Use <code>list_cell_seg_files</code> and <code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map_df</a></code> to read all cell seg data files in a single directory into a single <code>data_frame</code>. The result is similar to reading an inForm merge table.</p>
+<div id="find-all-cell-seg-data-files-in-a-directory" class="section level3">
 <h3 class="hasAnchor">
-<a href="#find-cell-seg-files" class="anchor"></a>Find cell seg files</h3>
+<a href="#find-all-cell-seg-data-files-in-a-directory" class="anchor"></a>Find all cell seg data files in a directory</h3>
 <p><code>list_cell_seg_files</code> takes a directory path as an argument and returns a list of paths to all the <code>cell_seg_data.txt</code> files in a directory.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phenoptr)
 <span class="kw">library</span>(tidyverse)
@@ -107,56 +110,73 @@ paths =<span class="st"> </span><span class="kw">list_cell_seg_files</span>(base
 <div id="read-and-combine-files" class="section level3">
 <h3 class="hasAnchor">
 <a href="#read-and-combine-files" class="anchor"></a>Read and combine files</h3>
-<p><code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map_df</a></code> applies <code>read_cell_seg_data</code> to each path in <code>paths</code>. The <code>data_frame</code>s returned from each call to <code>read_cell_seg_data</code> are combined row-wise to create a single merged <code>data_frame</code>. <code>table</code> is one way to summarize the data.</p>
+<p><code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map_df</a></code> applies <code>read_cell_seg_data</code> to each path in <code>paths</code>. The <code>data_frame</code>s returned from each call to <code>read_cell_seg_data</code> are combined row-wise to create a single merged <code>data_frame</code>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd =<span class="st"> </span>purrr::<span class="kw">map_df</span>(paths, read_cell_seg_data)
 <span class="kw">dim</span>(csd)</code></pre></div>
 <pre><code>## [1] 54525   199</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(csd$<span class="st">`</span><span class="dt">Sample Name</span><span class="st">`</span>, csd$Phenotype)</code></pre></div>
+<p>Using <code>table</code> is one way to summarize the data by <code>Sample Name</code> or <code>Slide ID</code>. This data comes from nine fields taken of three slides.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(csd$<span class="st">`</span><span class="dt">Sample Name</span><span class="st">`</span>, csd$Phenotype) %&gt;%<span class="st"> </span><span class="kw">addmargins</span>(<span class="dv">2</span>, <span class="kw">list</span>(<span class="dt">Total=</span>sum))</code></pre></div>
 <pre><code>##                                   
-##                                    CD68+ CD8+  CK+ FoxP3+ other
-##   Set12_20-6plex_[14146,53503].im3   557  101 2323    305  2659
-##   Set12_20-6plex_[15491,58698].im3    87  123 2367    105  2583
-##   Set12_20-6plex_[17241,54367].im3   344   79 3799    174  1709
-##   Set4_1-6plex_[11472,51360].im3     599  497 1731    512  4521
-##   Set4_1-6plex_[15206,60541].im3     112  349 1434    175  3109
-##   Set4_1-6plex_[16142,55840].im3     417  228 2257    228  2942
-##   Set8_11-6plex_[13394,50883].im3    590   58 2491    266  2088
-##   Set8_11-6plex_[14996,59221].im3    199  197 1100    166  3461
-##   Set8_11-6plex_[17130,56449].im3    469  259 1861    611  4283</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(csd$<span class="st">`</span><span class="dt">Slide ID</span><span class="st">`</span>, csd$Phenotype)</code></pre></div>
+##                                    CD68+ CD8+  CK+ FoxP3+ other Total
+##   Set12_20-6plex_[14146,53503].im3   557  101 2323    305  2659  5945
+##   Set12_20-6plex_[15491,58698].im3    87  123 2367    105  2583  5265
+##   Set12_20-6plex_[17241,54367].im3   344   79 3799    174  1709  6105
+##   Set4_1-6plex_[11472,51360].im3     599  497 1731    512  4521  7860
+##   Set4_1-6plex_[15206,60541].im3     112  349 1434    175  3109  5179
+##   Set4_1-6plex_[16142,55840].im3     417  228 2257    228  2942  6072
+##   Set8_11-6plex_[13394,50883].im3    590   58 2491    266  2088  5493
+##   Set8_11-6plex_[14996,59221].im3    199  197 1100    166  3461  5123
+##   Set8_11-6plex_[17130,56449].im3    469  259 1861    611  4283  7483</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">table</span>(csd$<span class="st">`</span><span class="dt">Slide ID</span><span class="st">`</span>, csd$Phenotype) %&gt;%<span class="st"> </span><span class="kw">addmargins</span>(<span class="dv">2</span>, <span class="kw">list</span>(<span class="dt">Total=</span>sum))</code></pre></div>
 <pre><code>##                 
-##                  CD68+  CD8+   CK+ FoxP3+ other
-##   Set12_20-6plex   988   303  8489    584  6951
-##   Set4_1-6plex    1128  1074  5422    915 10572
-##   Set8_11-6plex   1258   514  5452   1043  9832</code></pre>
+##                  CD68+  CD8+   CK+ FoxP3+ other Total
+##   Set12_20-6plex   988   303  8489    584  6951 17315
+##   Set4_1-6plex    1128  1074  5422    915 10572 19111
+##   Set8_11-6plex   1258   514  5452   1043  9832 18099</code></pre>
 </div>
 </div>
 <div id="compute-on-merged-data" class="section level2">
 <h2 class="hasAnchor">
 <a href="#compute-on-merged-data" class="anchor"></a>Compute on merged data</h2>
+<p>Use <code>dplyr:group_by</code> and <code><a href="http://dplyr.tidyverse.org/reference/summarise.html">dplyr::summarize</a></code> to compute summary statistics for all fields in a slide. For finer grouping, use multiple arguments to <code>group_by</code>. Use <code><a href="http://dplyr.tidyverse.org/reference/filter.html">dplyr::filter</a></code> to select a particular phenotype tissue category.</p>
+<p>This example computes the mean PDL1 expression for <code>CD68+</code> and <code>CK+</code> cells in <code>Tumor</code>, with the mean computed per <code>Slide ID</code></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(<span class="st">`</span><span class="dt">Tissue Category</span><span class="st">`</span>==<span class="st">'Tumor'</span>, Phenotype %in%<span class="st"> </span><span class="kw">c</span>(<span class="st">'CD68+'</span>, <span class="st">'CK+'</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">Slide ID</span><span class="st">`</span>, Phenotype) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">Mean_PDL1=</span><span class="kw">mean</span>(<span class="st">`</span><span class="dt">Entire Cell PDL1 (Opal 520) Mean</span><span class="st">`</span>))</code></pre></div>
+<pre><code>## # A tibble: 6 x 3
+## # Groups:   Slide ID [?]
+##       `Slide ID` Phenotype Mean_PDL1
+##            &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt;
+## 1 Set12_20-6plex     CD68+  4.594199
+## 2 Set12_20-6plex       CK+  0.820733
+## 3   Set4_1-6plex     CD68+  5.323777
+## 4   Set4_1-6plex       CK+  3.032117
+## 5  Set8_11-6plex     CD68+  4.014701
+## 6  Set8_11-6plex       CK+  1.123245</code></pre>
 <div id="add-distance-columns" class="section level3">
 <h3 class="hasAnchor">
 <a href="#add-distance-columns" class="anchor"></a>Add distance columns</h3>
 <p>Nearest-neighbor distances must be computed per-sample because the X/Y coordinates reported in cell seg data files are all relative to the top-left of the sample.</p>
-<p>Use <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to aggregate across subsets of a full data set. In this case, we want to group by <code>Sample Name</code>. Within each group, we want to call <code>find_nearest_distance</code> to compute the distance columns and <code><a href="http://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code> to combine them with the original data.</p>
+<p>Use <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to aggregate across subsets of a full data set. In this case, we want to group by <code>Sample Name</code>. Within each group, use <code><a href="http://dplyr.tidyverse.org/reference/do.html">dplyr::do</a></code> to call <code>find_nearest_distance</code> to compute the distance columns and <code><a href="http://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code> to combine them with the original data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use the same list of phenotypes for each sample</span>
 phenos =<span class="st"> </span><span class="kw">unique</span>(csd$Phenotype)
 csd =<span class="st"> </span>csd %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">group_by</span>(<span class="st">`</span><span class="dt">Sample Name</span><span class="st">`</span>) %&gt;%
-<span class="st">  </span>dplyr::<span class="kw">do</span>(dplyr::<span class="kw">bind_cols</span>(., <span class="kw">find_nearest_distance</span>(., phenos)))
-<span class="kw">dim</span>(csd)</code></pre></div>
-<pre><code>## [1] 54525   204</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">tail</span>(<span class="kw">names</span>(csd), <span class="dv">5</span>)</code></pre></div>
+<span class="st">  </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">Sample Name</span><span class="st">`</span>) %&gt;%
+<span class="st">  </span><span class="kw">do</span>(<span class="kw">bind_cols</span>(., <span class="kw">find_nearest_distance</span>(., phenos)))
+<span class="kw">dim</span>(csd)
+<span class="kw">tail</span>(<span class="kw">names</span>(csd), <span class="dv">5</span>)</code></pre></div>
+<pre><code>## [1] 54525   205</code></pre>
 <pre><code>## [1] "Distance to other"  "Distance to CD68+"  "Distance to FoxP3+"
 ## [4] "Distance to CK+"    "Distance to CD8+"</code></pre>
 </div>
 <div id="average-distance-per-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#average-distance-per-sample" class="anchor"></a>Average distance per sample</h3>
-<p>Use <code>dplyr:group_by</code> to compute summary statistics for all fields in a slide. The next example computes the average distance from a tumor cell (<code>CK+</code>) to the nearest macrophage (<code>CD68+</code>), with the averages computed per <code>Slide ID</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd %&gt;%<span class="st"> </span>dplyr::<span class="kw">group_by</span>(<span class="st">`</span><span class="dt">Slide ID</span><span class="st">`</span>) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">filter</span>(Phenotype==<span class="st">'CK+'</span>) %&gt;%<span class="st"> </span><span class="co"># Only tumor cells</span>
-<span class="st">  </span>dplyr::<span class="kw">summarize</span>(<span class="dt">mean_dist_to_CD68=</span><span class="kw">round</span>(<span class="kw">mean</span>(<span class="st">`</span><span class="dt">Distance to CD68+</span><span class="st">`</span>), <span class="dv">2</span>))</code></pre></div>
+<p>The next example uses <code>group_by</code>, <code>filter</code> and <code>summarize</code> again to compute the average distance from a tumor cell (<code>CK+</code>) to the nearest macrophage (<code>CD68+</code>), with the averages computed per <code>Slide ID</code>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd %&gt;%<span class="st"> </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">Slide ID</span><span class="st">`</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">filter</span>(Phenotype==<span class="st">'CK+'</span>) %&gt;%<span class="st"> </span><span class="co"># Only tumor cells</span>
+<span class="st">  </span><span class="kw">summarize</span>(<span class="dt">mean_dist_to_CD68=</span><span class="kw">round</span>(<span class="kw">mean</span>(<span class="st">`</span><span class="dt">Distance to CD68+</span><span class="st">`</span>), <span class="dv">2</span>))</code></pre></div>
 <pre><code>## # A tibble: 3 x 2
 ##       `Slide ID` mean_dist_to_CD68
 ##            &lt;chr&gt;             &lt;dbl&gt;
@@ -171,29 +191,32 @@ csd =<span class="st"> </span>csd %&gt;%
 <div id="compute-counts-and-averages" class="section level3">
 <h3 class="hasAnchor">
 <a href="#compute-counts-and-averages" class="anchor"></a>Compute counts and averages</h3>
-<p>Use <code>count_within_batch</code> to count cells within a radius for multiple tissue categories, phenotypes and fields. This example counts <code>CK+</code> cells with a <code>CD8+</code> cell within 10 or 25 microns, and <code>CK+</code> cells with a <code>CD68+</code> cell within 10 or 25 microns.</p>
+<p>Use <code>count_within_batch</code> to count cells within a radius for multiple tissue categories, phenotypes and fields. This example counts <code>CK+</code> cells with a <code>CD8+</code> cell within 10 or 25 microns, and <code>CK+</code> cells with a <code>CD68+</code> cell within 10 or 25 microns. <code><a href="http://dplyr.tidyverse.org/reference/reexports.html">dplyr::glimpse</a></code> gives a compact summary of the data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, <span class="dt">package =</span> <span class="st">"phenoptrExamples"</span>)
 pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>),
              <span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD68+'</span>))
 radius =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">25</span>)
-counts =<span class="st"> </span><span class="kw">count_within_batch</span>(base_path, pairs, radius) %&gt;%<span class="st"> </span>
-<span class="st">  </span>dplyr::<span class="kw">select</span>(-source, -category) <span class="co"># Remove unneeded columns</span></code></pre></div>
-<pre><code>## Processing Set12_20-6plex_[14146,53503] 
-## Processing Set12_20-6plex_[15491,58698] 
-## Processing Set12_20-6plex_[17241,54367] 
-## Processing Set4_1-6plex_[11472,51360] 
-## Processing Set4_1-6plex_[15206,60541] 
-## Processing Set4_1-6plex_[16142,55840] 
-## Processing Set8_11-6plex_[13394,50883] 
-## Processing Set8_11-6plex_[14996,59221] 
-## Processing Set8_11-6plex_[17130,56449]</code></pre>
+counts =<span class="st"> </span><span class="kw">count_within_batch</span>(base_path, pairs, radius, <span class="dt">verbose=</span><span class="ot">FALSE</span>) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">select</span>(-source, -category) <span class="co"># Remove unneeded columns</span>
+
+<span class="kw">glimpse</span>(counts)</code></pre></div>
+<pre><code>## Observations: 36
+## Variables: 8
+## $ slide_id    &lt;chr&gt; "Set12_20-6plex", "Set12_20-6plex", "Set12_20-6ple...
+## $ from        &lt;chr&gt; "CK+", "CK+", "CK+", "CK+", "CK+", "CK+", "CK+", "...
+## $ to          &lt;chr&gt; "CD8+", "CD8+", "CD68+", "CD68+", "CD8+", "CD8+", ...
+## $ radius      &lt;int&gt; 10, 25, 10, 25, 10, 25, 10, 25, 10, 25, 10, 25, 10...
+## $ from_count  &lt;int&gt; 2323, 2323, 2323, 2323, 2367, 2367, 2367, 2367, 37...
+## $ to_count    &lt;int&gt; 101, 101, 557, 557, 123, 123, 87, 87, 79, 79, 344,...
+## $ from_with   &lt;int&gt; 33, 250, 99, 647, 71, 528, 47, 301, 36, 284, 54, 5...
+## $ within_mean &lt;dbl&gt; 0.015927680, 0.136461472, 0.049504950, 0.613861386...</code></pre>
 </div>
 <div id="aggregate-counts-and-means-per-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#aggregate-counts-and-means-per-sample" class="anchor"></a>Aggregate counts and means per sample</h3>
 <p>Aggregating <code>from_count</code>, <code>to_count</code> and <code>from_with</code> across samples is straighforward, it only requires simple sums. Aggregating <code>within_mean</code> requires computing the underlying count of cells within the radius, summing, and computing a new mean.</p>
 <p>(Note: the value of <code>from_count * within_mean</code> is not reported by <code>count_with</code> because it may count cells multiple times.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">counts_per_sample =<span class="st"> </span>counts %&gt;%<span class="st"> </span>dplyr::<span class="kw">group_by</span>(slide_id, from, to, radius) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">counts_per_sample =<span class="st"> </span>counts %&gt;%<span class="st"> </span><span class="kw">group_by</span>(slide_id, from, to, radius) %&gt;%<span class="st"> </span>
 <span class="st">    </span><span class="kw">summarize</span>(<span class="dt">from_count=</span><span class="kw">sum</span>(from_count),
               <span class="dt">to_count=</span><span class="kw">sum</span>(to_count),
               <span class="dt">from_with=</span><span class="kw">sum</span>(from_with),
@@ -203,7 +226,7 @@ counts =<span class="st"> </span><span class="kw">count_within_batch</span>(base
 counts_per_sample</code></pre></div>
 <pre><code>## # A tibble: 12 x 8
 ##          slide_id  from    to radius from_count to_count from_with
-##             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;dbl&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;
+##             &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;  &lt;int&gt;      &lt;int&gt;    &lt;int&gt;     &lt;int&gt;
 ##  1 Set12_20-6plex   CK+ CD68+     10       8489      988       200
 ##  2 Set12_20-6plex   CK+ CD68+     25       8489      988      1482
 ##  3 Set12_20-6plex   CK+  CD8+     10       8489      303       140
@@ -227,7 +250,7 @@ counts_per_sample</code></pre></div>
       <h2 class="hasAnchor">
 <a href="#tocnav" class="anchor"></a>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
-<li><a href="#read-multiple-files">Read multiple files</a></li>
+<li><a href="#read-multiple-data-files">Read multiple data files</a></li>
       <li><a href="#compute-on-merged-data">Compute on merged data</a></li>
       <li><a href="#aggregate-count_within-across-samples">Aggregate <code>count_within</code> across samples</a></li>
       </ul>
