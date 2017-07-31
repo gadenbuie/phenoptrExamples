@@ -1,0 +1,77 @@
+---
+title: "Aggregating Touch Counts"
+author: "Kent Johnson"
+date: "`r Sys.Date()`"
+output: 
+  rmarkdown::html_vignette:
+    df_print: kable
+    toc: true
+vignette: >
+  %\VignetteIndexEntry{Aggregating Touch Counts}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, echo=FALSE,include=FALSE,message=FALSE}
+suppressPackageStartupMessages(library(tidyverse))
+knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+```
+
+The `phenoptr::count_touching_cells` function finds, counts and 
+visualizes touching cells of multiple phenotypes in a single field.
+
+This vignette gives an example of counting touches in multiple fields
+and aggregating across slides. This vignette does not create visualizations
+of the touching cells; the comments show how to change this.
+
+## Count touching cells in multiple fields
+
+This example counts touches for the nine fields included in this package.
+
+```{r eval=FALSE}
+library(phenoptr)
+library(tidyverse)
+
+# Find cell seg data files
+base_path = system.file("extdata", "samples", package = "phenoptrExamples")
+files = list_cell_seg_files(base_path)
+
+# The phenotype pairs to locate. This will find CD8 cells touching
+# tumor cells, and, separately, CD8 cells touching CD68 cells.
+pairs = list(c("CD8+", "CK+"),
+             c("CD8+", "CD68+"))
+
+# Colors for all the phenotypes mentioned in pairs
+colors = list(
+  'CD8+' = 'yellow',
+  'CK+' = 'cyan',
+  'CD68+' = 'magenta'
+)
+
+# Set this true to write images in the same directory as the data files
+write_images=FALSE
+
+# Count touching cells
+touch_counts = purrr::map_df(files, function(path) {
+  count_touching_cells(path, pairs, colors, write_images=write_images)
+})
+
+glimpse(touch_counts)
+```
+
+```{r echo=FALSE}
+# The previous is really slow, we fake it by saving the results...
+touch_counts = read_csv('touch_counts.csv')
+glimpse(touch_counts)
+```
+
+## Aggregate per slide
+
+The counts are easily aggregated over `Slide ID` using `dplyr::group_by` and 
+`dplyr::summarize_at`:
+
+```{r}
+touch_counts %>% group_by(slide_id, phenotype1, phenotype2) %>% 
+  summarize_at(vars(total1:touch_pairs), sum)
+```
+
