@@ -30,13 +30,14 @@ This vignette uses the `phenoptrExamples` sample data
 and functions from the [tidyverse](http://tidyverse.org/) to demonstrate
 reading and processing cell seg data from multiple fields and samples.
 
-## Read multiple files
+## Read multiple data files
 
 Use `list_cell_seg_files` and `purrr::map_df` to read all
-cell seg files in a single directory into a single `data_frame`. The result is
-similar to reading a table merged in inForm.
+cell seg data files in a single directory into a single `data_frame`.
+The result is
+similar to reading an inForm merge table.
 
-### Find cell seg files
+### Find all cell seg data files in a directory
 
 `list_cell_seg_files` takes a directory path as an argument and 
 returns a list of paths to all the `cell_seg_data.txt`
@@ -56,16 +57,37 @@ paths[1]
 `purrr::map_df` applies `read_cell_seg_data` to each path in `paths`. The
 `data_frame`s returned from each
 call to `read_cell_seg_data` are combined row-wise to create a single
-merged `data_frame`. `table` is one way to summarize the data.
+merged `data_frame`. 
 
 ```{r}
 csd = purrr::map_df(paths, read_cell_seg_data)
 dim(csd)
-table(csd$`Sample Name`, csd$Phenotype)
-table(csd$`Slide ID`, csd$Phenotype)
+```
+
+Using `table` is one way to summarize the data by `Sample Name` or `Slide ID`.
+This data comes from nine fields taken of three slides.
+
+```{r}
+table(csd$`Sample Name`, csd$Phenotype) %>% addmargins(2, list(Total=sum))
+table(csd$`Slide ID`, csd$Phenotype) %>% addmargins(2, list(Total=sum))
 ```
 
 ## Compute on merged data
+
+Use `dplyr:group_by` and `dplyr::summarize`
+to compute summary statistics for all fields
+in a slide. For finer grouping, use multiple arguments to `group_by`. 
+Use `dplyr::filter` to select a particular phenotype tissue category.
+
+This example computes the mean PDL1 expression for `CD68+` and `CK+` cells
+in `Tumor`, with the mean computed per `Slide ID`
+
+```{r}
+csd %>% 
+  filter(`Tissue Category`=='Tumor', Phenotype %in% c('CD68+', 'CK+')) %>% 
+  group_by(`Slide ID`, Phenotype) %>% 
+  summarize(Mean_PDL1=mean(`Entire Cell PDL1 (Opal 520) Mean`))
+```
 
 ### Add distance columns
 
@@ -75,30 +97,30 @@ of the sample.
 
 Use `dplyr::group_by` to aggregate across subsets of a full
 data set. In this case, we want to group by `Sample Name`. Within each
-group, we want to call `find_nearest_distance` to compute the distance
+group, use `dplyr::do` to call `find_nearest_distance` to compute the distance
 columns and `dplyr::bind_cols` to combine them with the original data.
 
 ```{r}
 # Use the same list of phenotypes for each sample
 phenos = unique(csd$Phenotype)
 csd = csd %>%
-  dplyr::group_by(`Sample Name`) %>%
-  dplyr::do(dplyr::bind_cols(., find_nearest_distance(., phenos)))
+  group_by(`Sample Name`) %>%
+  do(bind_cols(., find_nearest_distance(., phenos)))
 dim(csd)
 tail(names(csd), 5)
 ```
 
 ### Average distance per sample
 
-Use `dplyr:group_by` to compute summary statistics for all fields
-in a slide. The next example computes the average distance from a tumor cell
+The next example uses `group_by`, `filter` and `summarize` again to
+compute the average distance from a tumor cell
 (`CK+`) to the nearest macrophage (`CD68+`), with the averages computed
 per `Slide ID`.
 
 ```{r}
-csd %>% dplyr::group_by(`Slide ID`) %>% 
-  dplyr::filter(Phenotype=='CK+') %>% # Only tumor cells
-  dplyr::summarize(mean_dist_to_CD68=round(mean(`Distance to CD68+`), 2))
+csd %>% group_by(`Slide ID`) %>% 
+  filter(Phenotype=='CK+') %>% # Only tumor cells
+  summarize(mean_dist_to_CD68=round(mean(`Distance to CD68+`), 2))
 ```
 
 ## Aggregate `count_within` across samples
@@ -109,14 +131,17 @@ Use `count_within_batch` to count cells within a radius for
 multiple tissue categories, phenotypes and fields. 
 This example counts `CK+` cells with a `CD8+` cell within 10 or 25 microns,
 and `CK+` cells with a `CD68+` cell within 10 or 25 microns.
+`dplyr::glimpse` gives a compact summary of the data.
 
 ```{r}
 base_path = system.file("extdata", "samples", package = "phenoptrExamples")
 pairs = list(c('CK+', 'CD8+'),
              c('CK+', 'CD68+'))
 radius = c(10, 25)
-counts = count_within_batch(base_path, pairs, radius) %>% 
-  dplyr::select(-source, -category) # Remove unneeded columns
+counts = count_within_batch(base_path, pairs, radius, verbose=FALSE) %>% 
+  select(-source, -category) # Remove unneeded columns
+
+glimpse(counts)
 ```
 
 ### Aggregate counts and means per sample
@@ -130,7 +155,7 @@ count of cells within the radius, summing, and computing a new mean.
 `count_with` because it may count cells multiple times.)
 
 ```{r}
-counts_per_sample = counts %>% dplyr::group_by(slide_id, from, to, radius) %>% 
+counts_per_sample = counts %>% group_by(slide_id, from, to, radius) %>% 
     summarize(from_count=sum(from_count),
               to_count=sum(to_count),
               from_with=sum(from_with),
