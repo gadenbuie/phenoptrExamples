@@ -22,7 +22,8 @@ visit the Phenoptics&trade;
 
 ## Installation
 
-Installation is from GitHub:
+Installation is from GitHub. Note: this package includes many large files.
+The entire package contains over 150 MB of data files.
 
 ```
 # install.packages("devtools")
@@ -41,8 +42,8 @@ The MSI images were unmixed to components, segmented and classified
 with inForm® image analysis software. The files in the `extdata/samples`
 directory are a selection of the inForm output from these images.
 
-This table shows the Opal stains used, the epitope they were bound to,
-and the colors used to show the stain in the composite and phenotype views.
+This table shows the stains used, the epitopes they were bound to,
+and the colors used to show the stains in the composite and phenotype views.
 
 Stain   | Epitope | Composite | Phenotype
 --------|---------|-----------|----------
@@ -54,10 +55,22 @@ Opal620 | CD68    | Magenta   | Magenta
 Opal650 | PD1     | Green     | N/A
 Opal690 | CK      | Cyan      | Cyan
 
+The sample cell data includes phenotypes `CD8+` (cytotoxic T cell),
+`CD68+` (macrophage),
+`FoxP3+` (regulatory T cell), `CK+` (tumor), and `other`.
+
+Four files are included for each image:
+
+- Composite image in JPEG format (`composite_image.jpg`)
+- Cell segmentation data (`cell_seg_data.txt`)
+- Cell segmentation maps (`binary_seg_maps.tif`)
+- Composite with tissue segmentation (`image_with_tissue_seg.jpg`)
+
+To see a full list of all of the included files, use the command
+`list.files(system.file("extdata", "samples", package = "phenoptrExamples"))`.
+
 ### Full documentation
 
 See the
 [Articles](https://perkinelmer.github.io/phenoptrExamples/articles/index.html)
-and
-[Reference](https://perkinelmer.github.io/phenoptrExamples/reference/index.html)
-sections of the full documentation for details.
+section of the full documentation for more details.

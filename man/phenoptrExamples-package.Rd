@@ -12,6 +12,15 @@ it easier to read and analyze data tables
 and images created by PerkinElmer's inForm software.
 }
 \details{
+\code{phenoptrExamples} contains selected inForm output from nine images taken
+from three samples of lung cancer tissue. To see the names of all of the
+files included for these samples, use the command
+\code{list.files(system.file("extdata", "samples", package = "phenoptrExamples"))}.
+
+For details on the file contents, see the
+\href{https://perkinelmer.github.io/phenoptrExamples/}{package documentation}
+online.
+
 \code{phenoptr} and \code{phenoptrExamples} are part of the PerkinElmer Phenoptics family of
 Quantitative Pathology Research Solutions. For more information visit the
 Phenoptics \href{http://www.perkinelmer.com/cancer-immunology/index.html}{homepage}.
