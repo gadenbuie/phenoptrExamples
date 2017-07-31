@@ -133,7 +133,7 @@ This example counts `CK+` cells with a `CD8+` cell within 10 or 25 microns,
 and `CK+` cells with a `CD68+` cell within 10 or 25 microns.
 `dplyr::glimpse` gives a compact summary of the data.
 
-```{r}
+```{r eval=FALSE}
 base_path = system.file("extdata", "samples", package = "phenoptrExamples")
 pairs = list(c('CK+', 'CD8+'),
              c('CK+', 'CD68+'))
@@ -141,6 +141,11 @@ radius = c(10, 25)
 counts = count_within_batch(base_path, pairs, radius, verbose=FALSE) %>% 
   select(-source, -category) # Remove unneeded columns
 
+glimpse(counts)
+```
+```{r}
+# count_with_batch is slow, we cheat by caching the result
+counts = read_csv('count_within_batches.csv')
 glimpse(counts)
 ```
 
