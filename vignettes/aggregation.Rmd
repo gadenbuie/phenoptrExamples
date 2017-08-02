@@ -30,6 +30,8 @@ This vignette uses the `phenoptrExamples` sample data
 and functions from the [tidyverse](http://tidyverse.org/) to demonstrate
 reading and processing cell seg data from multiple fields and samples.
 
+----
+
 ## Read multiple data files
 
 Use `list_cell_seg_files` and `purrr::map_df` to read all
@@ -71,6 +73,8 @@ This data comes from nine fields taken of three slides.
 table(csd$`Sample Name`, csd$Phenotype) %>% addmargins(2, list(Total=sum))
 table(csd$`Slide ID`, csd$Phenotype) %>% addmargins(2, list(Total=sum))
 ```
+
+----
 
 ## Compute on merged data
 
@@ -130,6 +134,8 @@ csd %>% group_by(`Slide ID`) %>%
   filter(Phenotype=='CK+') %>% # Only tumor cells
   summarize(mean_dist_to_CD68=round(mean(`Distance to CD68+`), 2))
 ```
+
+----
 
 ## Aggregate `count_within` across samples
 

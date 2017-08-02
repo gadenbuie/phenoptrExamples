@@ -1,4 +1,11 @@
+url: http://perkinelmer.github.io/phenoptrExamples
+
+template:
+  params:
+    bootswatch: cerulean
+
 navbar:
+  type: inverse
   title: "phenoptrExamples"
   left:
     - icon: fa-home fa-lg
@@ -11,4 +18,5 @@ navbar:
           href: articles/count_touches.html
   right:
    - icon: fa-github fa-lg
+     text: github
      href: https://github.com/PerkinElmer/phenoptrExamples

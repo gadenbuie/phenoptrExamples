@@ -24,6 +24,8 @@ This vignette gives an example of counting touches in multiple fields
 and aggregating across slides. This vignette does not create visualizations
 of the touching cells; the comments show how to change this.
 
+----
+
 ## Count touching cells in multiple fields
 
 This example counts touches for the nine fields included in this package.
@@ -64,6 +66,8 @@ glimpse(touch_counts)
 touch_counts = read_csv('touch_counts.csv')
 glimpse(touch_counts)
 ```
+
+----
 
 ## Aggregate per slide
 

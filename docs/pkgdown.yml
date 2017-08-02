@@ -1,0 +1,7 @@
+urls:
+  reference: http://perkinelmer.github.io/phenoptrExamples/reference
+  article: http://perkinelmer.github.io/phenoptrExamples/articles
+articles:
+  aggregation: aggregation.html
+  count_touches: count_touches.html
+

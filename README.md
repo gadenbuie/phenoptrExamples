@@ -10,7 +10,7 @@ table {
 </style>
 
 `phenoptrExamples` contains data sets and example code which demonstrate
-the use of the `phenoptr` package.
+the use of the [phenoptr](http://perkinelmer.github.io/phenoptr) package.
 `phenoptr` contains functions that make it easier to read and analyze data tables
 and images created by PerkinElmer's inForm<sup>&reg;</sup> software.
 
@@ -19,6 +19,8 @@ family of
 Quantitative Pathology Research Solutions. For more information
 visit the Phenoptics&trade;
 [home page](http://www.perkinelmer.com/cancer|immunology/index.html).
+
+----
 
 ## Installation
 
@@ -29,6 +31,8 @@ The entire package contains over 150 MB of data files.
 # install.packages("devtools")
 devtools::install_github("PerkinElmer/phenoptrExamples", build_vignettes=TRUE)
 ```
+
+----
 
 ### Package data
 
@@ -69,8 +73,11 @@ Four files are included for each image:
 To see a full list of all of the included files, use the command
 `list.files(system.file("extdata", "samples", package = "phenoptrExamples"))`.
 
+----
+
 ### Full documentation
 
 See the
 [Articles](https://perkinelmer.github.io/phenoptrExamples/articles/index.html)
-section of the full documentation for more details.
+section of the `phenoptrExample` documentation and the 
+[full phenoptr documentaion](http://perkinelmer.github.io/phenoptr).

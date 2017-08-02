@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aggregating Touch Counts • phenoptrExamples</title>
-<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../jquery.sticky-kit.min.js"></script><script src="../pkgdown.js"></script><!-- mathjax --><script src="https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><!--[if lt IE 9]>
@@ -16,7 +16,7 @@
 </head>
 <body>
     <div class="container template-vignette">
-      <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <header><div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
@@ -55,6 +55,7 @@
   <a href="https://github.com/PerkinElmer/phenoptrExamples">
     <span class="fa fa-github fa-lg"></span>
      
+    github
   </a>
 </li>
       </ul>
@@ -80,6 +81,7 @@
 <div class="contents">
 <p>The <code><a href="http://www.rdocumentation.org/packages/phenoptr/topics/count_touching_cells">phenoptr::count_touching_cells</a></code> function finds, counts and visualizes touching cells of multiple phenotypes in a single field.</p>
 <p>This vignette gives an example of counting touches in multiple fields and aggregating across slides. This vignette does not create visualizations of the touching cells; the comments show how to change this.</p>
+<hr>
 <div id="count-touching-cells-in-multiple-fields" class="section level2">
 <h2 class="hasAnchor">
 <a href="#count-touching-cells-in-multiple-fields" class="anchor"></a>Count touching cells in multiple fields</h2>
@@ -123,6 +125,7 @@ touch_counts =<span class="st"> </span>purrr::<span class="kw">map_df</span>(fil
 ## $ p1_touch_p2 &lt;int&gt; 27, 22, 67, 8, 28, 19, 127, 122, 156, 28, 95, 48, ...
 ## $ p2_touch_p1 &lt;int&gt; 58, 29, 138, 6, 69, 21, 210, 133, 238, 24, 148, 48...
 ## $ touch_pairs &lt;int&gt; 63, 31, 151, 8, 73, 22, 258, 163, 289, 32, 177, 56...</code></pre>
+<hr>
 </div>
 <div id="aggregate-per-slide" class="section level2">
 <h2 class="hasAnchor">
