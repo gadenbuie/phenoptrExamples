@@ -1,0 +1,14 @@
+navbar:
+  title: "phenoptrExamples"
+  left:
+    - icon: fa-home fa-lg
+      href: index.html
+    - text: "Articles"
+      menu:
+        - text: "Aggregating Distance Metrics"
+          href: articles/aggregation.html
+        - text: "Aggregating Touch Counts"
+          href: articles/count_touches.html
+  right:
+   - icon: fa-github fa-lg
+     href: https://github.com/PerkinElmer/phenoptrExamples
