@@ -5,3 +5,5 @@
 inst/doc
 docs/articles/*.csv
 
+vignettes/*.html
+vignettes/*.R
