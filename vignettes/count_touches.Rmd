@@ -35,26 +35,26 @@ library(phenoptr)
 library(tidyverse)
 
 # Find cell seg data files
-base_path = system.file("extdata", "samples", package = "phenoptrExamples")
-files = list_cell_seg_files(base_path)
+base_path <- system.file("extdata", "samples", package = "phenoptrExamples")
+files <- list_cell_seg_files(base_path)
 
 # The phenotype pairs to locate. This will find CD8 cells touching
 # tumor cells, and, separately, CD8 cells touching CD68 cells.
-pairs = list(c("CD8+", "CK+"),
+pairs <- list(c("CD8+", "CK+"),
              c("CD8+", "CD68+"))
 
 # Colors for all the phenotypes mentioned in pairs
-colors = list(
+colors <- list(
   'CD8+' = 'yellow',
   'CK+' = 'cyan',
   'CD68+' = 'magenta'
 )
 
 # Set this true to write images in the same directory as the data files
-write_images=FALSE
+write_images <- FALSE
 
 # Count touching cells
-touch_counts = purrr::map_df(files, function(path) {
+touch_counts <- purrr::map_df(files, function(path) {
   count_touching_cells(path, pairs, colors, write_images=write_images)
 })
 
@@ -63,7 +63,7 @@ glimpse(touch_counts)
 
 ```{r echo=FALSE}
 # The previous is really slow, we fake it by saving the results...
-touch_counts = read_csv('touch_counts.csv')
+touch_counts <- read_csv('touch_counts.csv')
 glimpse(touch_counts)
 ```
 

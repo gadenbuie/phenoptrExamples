@@ -48,8 +48,8 @@ files in a directory.
 ```{r}
 library(phenoptr)
 library(tidyverse)
-base_path = system.file("extdata", "samples", package = "phenoptrExamples")
-paths = list_cell_seg_files(base_path)
+base_path <- system.file("extdata", "samples", package = "phenoptrExamples")
+paths <- list_cell_seg_files(base_path)
 length(paths)
 paths[1]
 ```
@@ -62,7 +62,7 @@ call to `read_cell_seg_data` are combined row-wise to create a single
 merged `data_frame`. 
 
 ```{r}
-csd = purrr::map_df(paths, read_cell_seg_data)
+csd <- purrr::map_df(paths, read_cell_seg_data)
 dim(csd)
 ```
 
@@ -106,8 +106,8 @@ columns and `dplyr::bind_cols` to combine them with the original data.
 
 ```{r eval=FALSE}
 # Use the same list of phenotypes for each sample
-phenos = unique(csd$Phenotype)
-csd = csd %>%
+phenos <- unique(csd$Phenotype)
+csd <- csd %>%
   group_by(`Sample Name`) %>%
   do(bind_cols(., find_nearest_distance(., phenos)))
 dim(csd)
@@ -115,8 +115,8 @@ tail(names(csd), 5)
 ```
 ```{r echo=FALSE}
 # Use cached values
-distances = read_csv('nearest_distance.csv')
-csd = bind_cols(csd, distances)
+distances <- read_csv('nearest_distance.csv')
+csd <- bind_cols(csd, distances)
 dim(csd)
 tail(names(csd), 5)
 ```
@@ -148,18 +148,18 @@ and `CK+` cells with a `CD68+` cell within 10 or 25 microns.
 `dplyr::glimpse` gives a compact summary of the data.
 
 ```{r eval=FALSE}
-base_path = system.file("extdata", "samples", package = "phenoptrExamples")
-pairs = list(c('CK+', 'CD8+'),
+base_path <- system.file("extdata", "samples", package = "phenoptrExamples")
+pairs <- list(c('CK+', 'CD8+'),
              c('CK+', 'CD68+'))
-radius = c(10, 25)
-counts = count_within_batch(base_path, pairs, radius, verbose=FALSE) %>% 
+radius <- c(10, 25)
+counts <- count_within_batch(base_path, pairs, radius, verbose=FALSE) %>% 
   select(-source, -category) # Remove unneeded columns
 
 glimpse(counts)
 ```
 ```{r echo=FALSE}
 # count_with_batch is slow, we cheat by caching the result
-counts = read_csv('count_within_batch.csv')
+counts <- read_csv('count_within_batch.csv')
 glimpse(counts)
 ```
 
@@ -174,7 +174,7 @@ count of cells within the radius, summing, and computing a new mean.
 `count_with` because it may count cells multiple times.)
 
 ```{r}
-counts_per_sample = counts %>% group_by(slide_id, from, to, radius) %>% 
+counts_per_sample <- counts %>% group_by(slide_id, from, to, radius) %>% 
     summarize(from_count=sum(from_count),
               to_count=sum(to_count),
               from_with=sum(from_with),
