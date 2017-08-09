@@ -78,7 +78,7 @@ To see a full list of all of the included files, use the command
 ### Full documentation
 
 See the
-Articles section of the 
+Tutorials section of the 
 [phenoptrExample documentation](https://perkinelmer.github.io/phenoptrExamples)
 and the 
 [full phenoptr documentation](http://perkinelmer.github.io/phenoptr).
