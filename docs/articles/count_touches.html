@@ -36,7 +36,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
@@ -73,7 +73,7 @@
       <h1>Aggregating Touch Counts</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-02</h4>
+            <h4 class="date">2017-08-09</h4>
           </div>
 
     
@@ -90,26 +90,26 @@
 <span class="kw">library</span>(tidyverse)
 
 <span class="co"># Find cell seg data files</span>
-base_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, <span class="dt">package =</span> <span class="st">"phenoptrExamples"</span>)
-files =<span class="st"> </span><span class="kw">list_cell_seg_files</span>(base_path)
+base_path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, <span class="dt">package =</span> <span class="st">"phenoptrExamples"</span>)
+files &lt;-<span class="st"> </span><span class="kw">list_cell_seg_files</span>(base_path)
 
 <span class="co"># The phenotype pairs to locate. This will find CD8 cells touching</span>
 <span class="co"># tumor cells, and, separately, CD8 cells touching CD68 cells.</span>
-pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">"CD8+"</span>, <span class="st">"CK+"</span>),
+pairs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">"CD8+"</span>, <span class="st">"CK+"</span>),
              <span class="kw">c</span>(<span class="st">"CD8+"</span>, <span class="st">"CD68+"</span>))
 
 <span class="co"># Colors for all the phenotypes mentioned in pairs</span>
-colors =<span class="st"> </span><span class="kw">list</span>(
+colors &lt;-<span class="st"> </span><span class="kw">list</span>(
   <span class="st">'CD8+'</span> =<span class="st"> 'yellow'</span>,
   <span class="st">'CK+'</span> =<span class="st"> 'cyan'</span>,
   <span class="st">'CD68+'</span> =<span class="st"> 'magenta'</span>
 )
 
 <span class="co"># Set this true to write images in the same directory as the data files</span>
-write_images=<span class="ot">FALSE</span>
+write_images &lt;-<span class="st"> </span><span class="ot">FALSE</span>
 
 <span class="co"># Count touching cells</span>
-touch_counts =<span class="st"> </span>purrr::<span class="kw">map_df</span>(files, function(path) {
+touch_counts &lt;-<span class="st"> </span>purrr::<span class="kw">map_df</span>(files, function(path) {
   <span class="kw">count_touching_cells</span>(path, pairs, colors, <span class="dt">write_images=</span>write_images)
 })
 

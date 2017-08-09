@@ -36,7 +36,7 @@
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    Articles
+    Tutorials
      
     <span class="caret"></span>
   </a>
@@ -73,7 +73,7 @@
       <h1>Aggregating Distance Metrics</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-02</h4>
+            <h4 class="date">2017-08-09</h4>
           </div>
 
     
@@ -99,8 +99,8 @@ table {
 <p><code>list_cell_seg_files</code> takes a directory path as an argument and returns a list of paths to all the <code>cell_seg_data.txt</code> files in a directory.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(phenoptr)
 <span class="kw">library</span>(tidyverse)
-base_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, <span class="dt">package =</span> <span class="st">"phenoptrExamples"</span>)
-paths =<span class="st"> </span><span class="kw">list_cell_seg_files</span>(base_path)
+base_path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, <span class="dt">package =</span> <span class="st">"phenoptrExamples"</span>)
+paths &lt;-<span class="st"> </span><span class="kw">list_cell_seg_files</span>(base_path)
 <span class="kw">length</span>(paths)</code></pre></div>
 <pre><code>## [1] 9</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">paths[<span class="dv">1</span>]</code></pre></div>
@@ -110,7 +110,7 @@ paths =<span class="st"> </span><span class="kw">list_cell_seg_files</span>(base
 <h3 class="hasAnchor">
 <a href="#read-and-combine-files" class="anchor"></a>Read and combine files</h3>
 <p><code><a href="http://www.rdocumentation.org/packages/purrr/topics/map">purrr::map_df</a></code> applies <code>read_cell_seg_data</code> to each path in <code>paths</code>. The <code>data_frame</code>s returned from each call to <code>read_cell_seg_data</code> are combined row-wise to create a single merged <code>data_frame</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd =<span class="st"> </span>purrr::<span class="kw">map_df</span>(paths, read_cell_seg_data)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">csd &lt;-<span class="st"> </span>purrr::<span class="kw">map_df</span>(paths, read_cell_seg_data)
 <span class="kw">dim</span>(csd)</code></pre></div>
 <pre><code>## [1] 54525   199</code></pre>
 <p>Using <code>table</code> is one way to summarize the data by <code>Sample Name</code> or <code>Slide ID</code>. This data comes from nine fields taken of three slides.</p>
@@ -160,8 +160,8 @@ paths =<span class="st"> </span><span class="kw">list_cell_seg_files</span>(base
 <p>Nearest-neighbor distances must be computed per-sample because the X/Y coordinates reported in cell seg data files are all relative to the top-left of the sample.</p>
 <p>Use <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> to aggregate across subsets of a full data set. In this case, we want to group by <code>Sample Name</code>. Within each group, use <code><a href="http://dplyr.tidyverse.org/reference/do.html">dplyr::do</a></code> to call <code>find_nearest_distance</code> to compute the distance columns and <code><a href="http://dplyr.tidyverse.org/reference/bind.html">dplyr::bind_cols</a></code> to combine them with the original data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Use the same list of phenotypes for each sample</span>
-phenos =<span class="st"> </span><span class="kw">unique</span>(csd$Phenotype)
-csd =<span class="st"> </span>csd %&gt;%
+phenos &lt;-<span class="st"> </span><span class="kw">unique</span>(csd$Phenotype)
+csd &lt;-<span class="st"> </span>csd %&gt;%
 <span class="st">  </span><span class="kw">group_by</span>(<span class="st">`</span><span class="dt">Sample Name</span><span class="st">`</span>) %&gt;%
 <span class="st">  </span><span class="kw">do</span>(<span class="kw">bind_cols</span>(., <span class="kw">find_nearest_distance</span>(., phenos)))
 <span class="kw">dim</span>(csd)
@@ -193,11 +193,11 @@ csd =<span class="st"> </span>csd %&gt;%
 <h3 class="hasAnchor">
 <a href="#compute-counts-and-averages" class="anchor"></a>Compute counts and averages</h3>
 <p>Use <code>count_within_batch</code> to count cells within a radius for multiple tissue categories, phenotypes and fields. This example counts <code>CK+</code> cells with a <code>CD8+</code> cell within 10 or 25 microns, and <code>CK+</code> cells with a <code>CD68+</code> cell within 10 or 25 microns. <code><a href="http://dplyr.tidyverse.org/reference/reexports.html">dplyr::glimpse</a></code> gives a compact summary of the data.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path =<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, <span class="dt">package =</span> <span class="st">"phenoptrExamples"</span>)
-pairs =<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>),
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">base_path &lt;-<span class="st"> </span><span class="kw">system.file</span>(<span class="st">"extdata"</span>, <span class="st">"samples"</span>, <span class="dt">package =</span> <span class="st">"phenoptrExamples"</span>)
+pairs &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD8+'</span>),
              <span class="kw">c</span>(<span class="st">'CK+'</span>, <span class="st">'CD68+'</span>))
-radius =<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">25</span>)
-counts =<span class="st"> </span><span class="kw">count_within_batch</span>(base_path, pairs, radius, <span class="dt">verbose=</span><span class="ot">FALSE</span>) %&gt;%<span class="st"> </span>
+radius &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">10</span>, <span class="dv">25</span>)
+counts &lt;-<span class="st"> </span><span class="kw">count_within_batch</span>(base_path, pairs, radius, <span class="dt">verbose=</span><span class="ot">FALSE</span>) %&gt;%<span class="st"> </span>
 <span class="st">  </span><span class="kw">select</span>(-source, -category) <span class="co"># Remove unneeded columns</span>
 
 <span class="kw">glimpse</span>(counts)</code></pre></div>
@@ -217,7 +217,7 @@ counts =<span class="st"> </span><span class="kw">count_within_batch</span>(base
 <a href="#aggregate-counts-and-means-per-sample" class="anchor"></a>Aggregate counts and means per sample</h3>
 <p>Aggregating <code>from_count</code>, <code>to_count</code> and <code>from_with</code> across samples is straighforward, it only requires simple sums. Aggregating <code>within_mean</code> requires computing the underlying count of cells within the radius, summing, and computing a new mean.</p>
 <p>(Note: the value of <code>from_count * within_mean</code> is not reported by <code>count_with</code> because it may count cells multiple times.)</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">counts_per_sample =<span class="st"> </span>counts %&gt;%<span class="st"> </span><span class="kw">group_by</span>(slide_id, from, to, radius) %&gt;%<span class="st"> </span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">counts_per_sample &lt;-<span class="st"> </span>counts %&gt;%<span class="st"> </span><span class="kw">group_by</span>(slide_id, from, to, radius) %&gt;%<span class="st"> </span>
 <span class="st">    </span><span class="kw">summarize</span>(<span class="dt">from_count=</span><span class="kw">sum</span>(from_count),
               <span class="dt">to_count=</span><span class="kw">sum</span>(to_count),
               <span class="dt">from_with=</span><span class="kw">sum</span>(from_with),
