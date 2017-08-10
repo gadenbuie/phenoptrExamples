@@ -1,5 +1,5 @@
 ---
-title: "Aggregating Touch Counts"
+title: "Aggregating touch counts"
 author: "Kent Johnson"
 date: "`r Sys.Date()`"
 output: 
@@ -7,7 +7,7 @@ output:
     df_print: kable
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Aggregating Touch Counts}
+  %\VignetteIndexEntry{Aggregating touch counts}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

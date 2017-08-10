@@ -12,9 +12,9 @@ navbar:
       href: index.html
     - text: "Tutorials"
       menu:
-        - text: "Aggregating Distance Metrics"
+        - text: "Aggregating data from multiple fields"
           href: articles/aggregation.html
-        - text: "Aggregating Touch Counts"
+        - text: "Aggregating touch counts"
           href: articles/count_touches.html
   right:
    - icon: fa-github fa-lg

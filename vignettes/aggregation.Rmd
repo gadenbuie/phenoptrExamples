@@ -1,5 +1,5 @@
 ---
-title: "Aggregating Distance Metrics"
+title: "Aggregating data from multiple fields"
 author: "Kent Johnson"
 date: "`r Sys.Date()`"
 output: 
@@ -7,7 +7,7 @@ output:
     df_print: kable
     toc: true
 vignette: >
-  %\VignetteIndexEntry{Aggregating Distance Metrics}
+  %\VignetteIndexEntry{Aggregating data from multiple fields}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

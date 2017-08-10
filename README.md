@@ -9,11 +9,14 @@ table {
 }
 </style>
 
-`phenoptrExamples` contains data sets and example code which demonstrate
-the use of the [phenoptr](http://perkinelmer.github.io/phenoptr) package.
+`phenoptrExamples` contains extended data sets and example code demonstrating
+the use of the [phenoptr](http://perkinelmer.github.io/phenoptr) package to
+analyze data from multiple fields. For introductory examples, please see
+the [Tutorials](http://perkinelmer.github.io/phenoptr)
+included in the `phenoptr` documentation.
+
 `phenoptr` contains functions that make it easier to read and analyze data tables
 and images created by PerkinElmer's inForm<sup>&reg;</sup> software.
-
 `phenoptr` and `phenoptrExamples` are part of the PerkinElmer Phenoptics&trade;
 family of
 Quantitative Pathology Research Solutions. For more information
