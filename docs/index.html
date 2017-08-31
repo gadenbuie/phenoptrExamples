@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Example Data for phenoptr • phenoptrExamples</title>
+<title>Extended examples for use with phenoptr • phenoptrExamples</title>
 <!-- jquery --><script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha384-nrOSfDHtoPMzJHjVTdCopGqIqeYETSXhZDFyniQ8ZHcVy08QesyHcnOUpMpqnmWq" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.7/cerulean/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Font Awesome icons --><link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
 <!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
@@ -69,9 +69,9 @@
       
       </header><div class="row">
   <div class="contents col-md-9">
-    <div id="phenoptrexamples---example-data-for-use-with-the-phenoptr-package" class="section level1">
+    <div id="phenoptrexamples---extended-examples-for-use-with-the-phenoptr-package" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
-<a href="#phenoptrexamples---example-data-for-use-with-the-phenoptr-package" class="anchor"></a>phenoptrExamples - Example data for use with the <code>phenoptr</code> package</h1></div>
+<a href="#phenoptrexamples---extended-examples-for-use-with-the-phenoptr-package" class="anchor"></a>phenoptrExamples - Extended examples for use with the <code>phenoptr</code> package</h1></div>
 <style type="text/css">
 img { 
   border: none;
@@ -80,7 +80,12 @@ table {
     width: auto !important;
 }
 </style>
-<p><code>phenoptrExamples</code> contains extended data sets and example code demonstrating the use of the <a href="http://perkinelmer.github.io/phenoptr">phenoptr</a> package to analyze data from multiple fields. For introductory examples, please see the <a href="http://perkinelmer.github.io/phenoptr">Tutorials</a> included in the <code>phenoptr</code> documentation.</p>
+<p><code>phenoptrExamples</code> contains <a href="https://perkinelmer.github.io/phenoptrExamples/articles/index.html">example code</a> and extended data sets demonstrating the use of the <a href="http://perkinelmer.github.io/phenoptr">phenoptr</a> package to analyze data from multiple fields.</p>
+<div class="panel panel-default"><div class="panel-body">
+For introductory examples, please see
+the
+<a href="https://perkinelmer.github.io/phenoptr/articles/index.html">Tutorials</a>
+included in the <code>phenoptr</code> documentation.</div></div>
 <p><code>phenoptr</code> contains functions that make it easier to read and analyze data tables and images created by PerkinElmer’s inForm<sup>®</sup> software. <code>phenoptr</code> and <code>phenoptrExamples</code> are part of the PerkinElmer Phenoptics™ family of Quantitative Pathology Research Solutions. For more information visit the Phenoptics™ <a href="http://www.perkinelmer.com/cancer%7Cimmunology/index.html">home page</a>.</p>
 <hr>
 <div id="installation" class="section level2">
@@ -90,11 +95,42 @@ table {
 <pre><code><a href="http://www.rdocumentation.org/packages/devtools/topics/install_github"># install.packages("devtools")
 devtools::install_github("PerkinElmer/phenoptrExamples", build_vignettes=TRUE)</a></code></pre>
 <hr>
-<div id="package-data" class="section level3">
+</div>
+<div id="getting-started" class="section level2">
+<h2 class="hasAnchor">
+<a href="#getting-started" class="anchor"></a>Getting started</h2>
+<p>The Tutorials demonstrate aggregation of data across multiple fields and slides.</p>
+<ul>
+<li>
+<a href="https://perkinelmer.github.io/phenoptrExamples/articles/aggregation.html">Aggregating data from multiple fields</a> demonstrates reading and processing cell seg data from multiple fields and samples.</li>
+<li>
+<a href="https://perkinelmer.github.io/phenoptrExamples/articles/count_touches.html">Aggregating touch counts</a> shows how to count touching cells across multiple fields and aggregate the results per sample.</li>
+</ul>
+<div id="sample-data" class="section level3">
 <h3 class="hasAnchor">
-<a href="#package-data" class="anchor"></a>Package data</h3>
+<a href="#sample-data" class="anchor"></a>Sample data</h3>
 <p><code>phenoptrExamples</code> contains selected inForm output from nine images taken from three samples of lung cancer tissue.</p>
-<p>The tissue was stained with DAPI counterstain and Opal™ stains and imaged on a Vectra® Polaris™ Automated Quantitative Pathology Imaging System. The MSI images were unmixed to components, segmented and classified with inForm® image analysis software. The files in the <code>extdata/samples</code> directory are a selection of the inForm output from these images.</p>
+<p>The tissue was stained with DAPI counterstain and Opal™ stains and imaged on a Vectra® Polaris™ Automated Quantitative Pathology Imaging System. The MSI images were unmixed to components, segmented and classified with inForm® image analysis software.</p>
+<p>The sample cell data includes these phenotypes:</p>
+<ul>
+<li>
+<code>CD8+</code> (cytotoxic T cell)</li>
+<li>
+<code>CD68+</code> (macrophage)</li>
+<li>
+<code>FoxP3+</code> (regulatory T cell)</li>
+<li>
+<code>CK+</code> (tumor)</li>
+<li><code>other</code></li>
+</ul>
+<p>Four files are included for each image:</p>
+<ul>
+<li>Composite image in JPEG format (<code>composite_image.jpg</code>)</li>
+<li>Cell segmentation data (<code>cell_seg_data.txt</code>)</li>
+<li>Cell segmentation maps (<code>binary_seg_maps.tif</code>)</li>
+<li>Composite with tissue segmentation (<code>image_with_tissue_seg.jpg</code>)</li>
+</ul>
+<p>To see a full list of all included files, use the command <code>list.files(system.file("extdata", "samples", package = "phenoptrExamples"))</code>.</p>
 <p>This table shows the stains used, the epitopes they were bound to, and the colors used to show the stains in the composite and phenotype views.</p>
 <table class="table">
 <thead><tr class="header">
@@ -148,21 +184,12 @@ devtools::install_github("PerkinElmer/phenoptrExamples", build_vignettes=TRUE)</
 </tr>
 </tbody>
 </table>
-<p>The sample cell data includes phenotypes <code>CD8+</code> (cytotoxic T cell), <code>CD68+</code> (macrophage), <code>FoxP3+</code> (regulatory T cell), <code>CK+</code> (tumor), and <code>other</code>.</p>
-<p>Four files are included for each image:</p>
-<ul>
-<li>Composite image in JPEG format (<code>composite_image.jpg</code>)</li>
-<li>Cell segmentation data (<code>cell_seg_data.txt</code>)</li>
-<li>Cell segmentation maps (<code>binary_seg_maps.tif</code>)</li>
-<li>Composite with tissue segmentation (<code>image_with_tissue_seg.jpg</code>)</li>
-</ul>
-<p>To see a full list of all of the included files, use the command <code>list.files(system.file("extdata", "samples", package = "phenoptrExamples"))</code>.</p>
 <hr>
 </div>
 <div id="full-documentation" class="section level3">
 <h3 class="hasAnchor">
 <a href="#full-documentation" class="anchor"></a>Full documentation</h3>
-<p>See the Tutorials section of the <a href="https://perkinelmer.github.io/phenoptrExamples">phenoptrExample documentation</a> and the <a href="http://perkinelmer.github.io/phenoptr">full phenoptr documentation</a>.</p>
+<p>See the <a href="https://perkinelmer.github.io/phenoptrExamples/articles/index.html">Tutorials</a> and the <a href="http://perkinelmer.github.io/phenoptr">full phenoptr documentation</a>.</p>
 </div>
 </div>
 </div>

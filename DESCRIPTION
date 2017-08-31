@@ -1,11 +1,10 @@
 Package: phenoptrExamples
 Type: Package
-Title: Example Data for phenoptr
+Title: Extended examples for use with phenoptr
 Version: 0.1.0.9000
-Author: Who wrote it
-Maintainer: Maintainer: Kent Johnson <kent.johnson@perkinelmer.com>
-Description: Data sets and example code which demonstrate
-    the use of the phenoptr package.
+Description: Example code and extended data sets demonstrating
+    the use of the phenoptr package to
+    analyze data from multiple fields and samples.
 Depends: R (>= 3.1.0)
 License: Zlib | file LICENSE
 Encoding: UTF-8
@@ -16,8 +15,9 @@ Suggests:
     dplyr,
     knitr,
     phenoptr,
-    purrrr,
-    rmarkdown
+    purrr,
+    rmarkdown,
+    tidyverse
 VignetteBuilder: knitr
 URL: https://github.com/PerkinElmer/phenoptrExamples
 BugReports: https://github.com/PerkinElmer/phenoptrExamples/issues

@@ -73,7 +73,7 @@
       <h1>Aggregating touch counts</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-10</h4>
+            <h4 class="date">2017-08-31</h4>
           </div>
 
     
@@ -109,7 +109,7 @@ colors &lt;-<span class="st"> </span><span class="kw">list</span>(
 write_images &lt;-<span class="st"> </span><span class="ot">FALSE</span>
 
 <span class="co"># Count touching cells</span>
-touch_counts &lt;-<span class="st"> </span>purrr::<span class="kw">map_df</span>(files, function(path) {
+touch_counts &lt;-<span class="st"> </span>purrr<span class="op">::</span><span class="kw"><a href="http://www.rdocumentation.org/packages/purrr/topics/map">map_df</a></span>(files, <span class="cf">function</span>(path) {
   <span class="kw">count_touching_cells</span>(path, pairs, colors, <span class="dt">write_images=</span>write_images)
 })
 
@@ -131,8 +131,8 @@ touch_counts &lt;-<span class="st"> </span>purrr::<span class="kw">map_df</span>
 <h2 class="hasAnchor">
 <a href="#aggregate-per-slide" class="anchor"></a>Aggregate per slide</h2>
 <p>The counts are easily aggregated over <code>Slide ID</code> using <code><a href="http://dplyr.tidyverse.org/reference/group_by.html">dplyr::group_by</a></code> and <code><a href="http://dplyr.tidyverse.org/reference/summarise_all.html">dplyr::summarize_at</a></code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">touch_counts %&gt;%<span class="st"> </span><span class="kw">group_by</span>(slide_id, phenotype1, phenotype2) %&gt;%<span class="st"> </span>
-<span class="st">  </span><span class="kw">summarize_at</span>(<span class="kw">vars</span>(total1:touch_pairs), sum)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">touch_counts <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(slide_id, phenotype1, phenotype2) <span class="op">%&gt;%</span><span class="st"> </span>
+<span class="st">  </span><span class="kw">summarize_at</span>(<span class="kw">vars</span>(total1<span class="op">:</span>touch_pairs), sum)</code></pre></div>
 <pre><code>## # A tibble: 6 x 8
 ## # Groups:   slide_id, phenotype1 [?]
 ##         slide_id phenotype1 phenotype2 total1 total2 p1_touch_p2

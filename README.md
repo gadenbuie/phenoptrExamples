@@ -1,4 +1,4 @@
-# phenoptrExamples - Example data for use with the `phenoptr` package
+# phenoptrExamples - Extended examples for use with the `phenoptr` package
 
 <style type="text/css">
 img { 
@@ -9,11 +9,17 @@ table {
 }
 </style>
 
-`phenoptrExamples` contains extended data sets and example code demonstrating
+`phenoptrExamples` contains 
+[example code](https://perkinelmer.github.io/phenoptrExamples/articles/index.html) 
+and extended data sets demonstrating
 the use of the [phenoptr](http://perkinelmer.github.io/phenoptr) package to
-analyze data from multiple fields. For introductory examples, please see
-the [Tutorials](http://perkinelmer.github.io/phenoptr)
-included in the `phenoptr` documentation.
+analyze data from multiple fields. 
+
+<div class="panel panel-default"><div class="panel-body">
+For introductory examples, please see
+the
+<a href="https://perkinelmer.github.io/phenoptr/articles/index.html">Tutorials</a>
+included in the <code>phenoptr</code> documentation.</div></div>
 
 `phenoptr` contains functions that make it easier to read and analyze data tables
 and images created by PerkinElmer's inForm<sup>&reg;</sup> software.
@@ -37,7 +43,16 @@ devtools::install_github("PerkinElmer/phenoptrExamples", build_vignettes=TRUE)
 
 ----
 
-### Package data
+## Getting started
+
+The Tutorials demonstrate aggregation of data across multiple fields and slides.
+
+- [Aggregating data from multiple fields](https://perkinelmer.github.io/phenoptrExamples/articles/aggregation.html)
+demonstrates reading and processing cell seg data from multiple fields and samples.
+- [Aggregating touch counts](https://perkinelmer.github.io/phenoptrExamples/articles/count_touches.html) shows how to count touching cells across multiple fields and aggregate
+the results per sample.
+
+### Sample data
 
 `phenoptrExamples` contains selected inForm output from nine images taken
 from three samples of lung cancer tissue.
@@ -46,8 +61,25 @@ The tissue was stained with DAPI counterstain and Opal™ stains
 and imaged on a 
 Vectra® Polaris™ Automated Quantitative Pathology Imaging System.
 The MSI images were unmixed to components, segmented and classified
-with inForm® image analysis software. The files in the `extdata/samples`
-directory are a selection of the inForm output from these images.
+with inForm® image analysis software. 
+
+The sample cell data includes these phenotypes:
+
+- `CD8+` (cytotoxic T cell)
+- `CD68+` (macrophage)
+- `FoxP3+` (regulatory T cell)
+- `CK+` (tumor)
+- `other`
+
+Four files are included for each image:
+
+- Composite image in JPEG format (`composite_image.jpg`)
+- Cell segmentation data (`cell_seg_data.txt`)
+- Cell segmentation maps (`binary_seg_maps.tif`)
+- Composite with tissue segmentation (`image_with_tissue_seg.jpg`)
+
+To see a full list of all included files, use the command
+`list.files(system.file("extdata", "samples", package = "phenoptrExamples"))`.
 
 This table shows the stains used, the epitopes they were bound to,
 and the colors used to show the stains in the composite and phenotype views.
@@ -62,26 +94,11 @@ Opal620 | CD68    | Magenta   | Magenta
 Opal650 | PD1     | Green     | N/A
 Opal690 | CK      | Cyan      | Cyan
 
-The sample cell data includes phenotypes `CD8+` (cytotoxic T cell),
-`CD68+` (macrophage),
-`FoxP3+` (regulatory T cell), `CK+` (tumor), and `other`.
-
-Four files are included for each image:
-
-- Composite image in JPEG format (`composite_image.jpg`)
-- Cell segmentation data (`cell_seg_data.txt`)
-- Cell segmentation maps (`binary_seg_maps.tif`)
-- Composite with tissue segmentation (`image_with_tissue_seg.jpg`)
-
-To see a full list of all of the included files, use the command
-`list.files(system.file("extdata", "samples", package = "phenoptrExamples"))`.
-
 ----
 
 ### Full documentation
 
 See the
-Tutorials section of the 
-[phenoptrExample documentation](https://perkinelmer.github.io/phenoptrExamples)
+[Tutorials](https://perkinelmer.github.io/phenoptrExamples/articles/index.html)
 and the 
 [full phenoptr documentation](http://perkinelmer.github.io/phenoptr).

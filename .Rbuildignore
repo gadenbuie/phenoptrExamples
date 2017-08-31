@@ -1,6 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^/docs$
+^docs$
 ^_pkgdown\.yml$
 
 .lintr
