@@ -166,7 +166,7 @@ glimpse(counts)
 ### Aggregate counts and means per sample
 
 Aggregating `from_count`, `to_count` and `from_with`
-across samples is straighforward, it only requires
+across samples is straightforward, it only requires
 simple sums. Aggregating `within_mean` requires computing the underlying 
 count of cells within the radius, summing, and computing a new mean.
 

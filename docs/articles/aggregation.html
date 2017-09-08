@@ -73,7 +73,7 @@
       <h1>Aggregating data from multiple fields</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-31</h4>
+            <h4 class="date">2017-09-08</h4>
           </div>
 
     
@@ -215,7 +215,7 @@ counts &lt;-<span class="st"> </span><span class="kw">count_within_batch</span>(
 <div id="aggregate-counts-and-means-per-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#aggregate-counts-and-means-per-sample" class="anchor"></a>Aggregate counts and means per sample</h3>
-<p>Aggregating <code>from_count</code>, <code>to_count</code> and <code>from_with</code> across samples is straighforward, it only requires simple sums. Aggregating <code>within_mean</code> requires computing the underlying count of cells within the radius, summing, and computing a new mean.</p>
+<p>Aggregating <code>from_count</code>, <code>to_count</code> and <code>from_with</code> across samples is straightforward, it only requires simple sums. Aggregating <code>within_mean</code> requires computing the underlying count of cells within the radius, summing, and computing a new mean.</p>
 <p>(Note: the value of <code>from_count * within_mean</code> is not reported by <code>count_with</code> because it may count cells multiple times.)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">counts_per_sample &lt;-<span class="st"> </span>counts <span class="op">%&gt;%</span><span class="st"> </span><span class="kw">group_by</span>(slide_id, from, to, radius) <span class="op">%&gt;%</span><span class="st"> </span>
 <span class="st">    </span><span class="kw">summarize</span>(<span class="dt">from_count=</span><span class="kw">sum</span>(from_count),
