@@ -73,7 +73,7 @@
       <h1>Aggregating touch counts</h1>
                         <h4 class="author">Kent Johnson</h4>
             
-            <h4 class="date">2017-08-31</h4>
+            <h4 class="date">2017-11-14</h4>
           </div>
 
     
@@ -135,15 +135,14 @@ touch_counts &lt;-<span class="st"> </span>purrr<span class="op">::</span><span 
 <span class="st">  </span><span class="kw">summarize_at</span>(<span class="kw">vars</span>(total1<span class="op">:</span>touch_pairs), sum)</code></pre></div>
 <pre><code>## # A tibble: 6 x 8
 ## # Groups:   slide_id, phenotype1 [?]
-##         slide_id phenotype1 phenotype2 total1 total2 p1_touch_p2
-##            &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;  &lt;int&gt;  &lt;int&gt;       &lt;int&gt;
-## 1 Set12_20-6plex       CD8+      CD68+    303    988          49
-## 2 Set12_20-6plex       CD8+        CK+    303   8489         122
-## 3   Set4_1-6plex       CD8+      CD68+   1074   1128         198
-## 4   Set4_1-6plex       CD8+        CK+   1074   5422         378
-## 5  Set8_11-6plex       CD8+      CD68+    514   1258         108
-## 6  Set8_11-6plex       CD8+        CK+    514   5452         134
-## # ... with 2 more variables: p2_touch_p1 &lt;int&gt;, touch_pairs &lt;int&gt;</code></pre>
+##         slide_id phenotype1 phenotype2 total1 total2 p1_touch_p2 p2_touch_p1 touch_pairs
+##            &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;  &lt;int&gt;  &lt;int&gt;       &lt;int&gt;       &lt;int&gt;       &lt;int&gt;
+## 1 Set12_20-6plex       CD8+      CD68+    303    988          49          56          61
+## 2 Set12_20-6plex       CD8+        CK+    303   8489         122         265         287
+## 3   Set4_1-6plex       CD8+      CD68+   1074   1128         198         205         251
+## 4   Set4_1-6plex       CD8+        CK+   1074   5422         378         596         724
+## 5  Set8_11-6plex       CD8+      CD68+    514   1258         108         124         136
+## 6  Set8_11-6plex       CD8+        CK+    514   5452         134         228         250</code></pre>
 </div>
 </div>
   </div>

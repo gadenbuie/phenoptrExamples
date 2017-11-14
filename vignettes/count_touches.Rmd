@@ -15,6 +15,7 @@ vignette: >
 ```{r setup, echo=FALSE,include=FALSE,message=FALSE}
 suppressPackageStartupMessages(library(tidyverse))
 knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+options(tibble.width = Inf) # Print all columns of tibbles
 ```
 
 The `phenoptr::count_touching_cells` function finds, counts and 

@@ -15,6 +15,7 @@ vignette: >
 ```{r setup, echo=FALSE,include=FALSE,message=FALSE}
 suppressPackageStartupMessages(library(tidyverse))
 knitr::opts_chunk$set(warning=FALSE, message=FALSE)
+options(tibble.width = Inf) # Print all columns of tibbles
 ```
 
 <style type="text/css">
@@ -59,7 +60,7 @@ paths[1]
 `purrr::map_df` applies `read_cell_seg_data` to each path in `paths`. The
 `data_frame`s returned from each
 call to `read_cell_seg_data` are combined row-wise to create a single
-merged `data_frame`. 
+merged `data_frame`. The result is similar to an inForm merge data file.
 
 ```{r}
 csd <- purrr::map_df(paths, read_cell_seg_data)
@@ -78,13 +79,19 @@ table(csd$`Slide ID`, csd$Phenotype) %>% addmargins(2, list(Total=sum))
 
 ## Compute on merged data
 
-Use `dplyr:group_by` and `dplyr::summarize`
+Merged data may come from an inForm merge or from combining individual files
+as shown above. In either case, the data includes entries which come from
+multiple fields. Computing on merged data requires a few new techniques.
+
+### Summarize per slide
+
+Use `dplyr::group_by` and `dplyr::summarize`
 to compute summary statistics for all fields
 in a slide. For finer grouping, use multiple arguments to `group_by`. 
 Use `dplyr::filter` to select a particular phenotype tissue category.
 
 This example computes the mean PDL1 expression for `CD68+` and `CK+` cells
-in `Tumor`, with the mean computed per `Slide ID`
+in `Tumor`, with the mean computed per `Slide ID`.
 
 ```{r}
 csd %>% 
@@ -93,7 +100,7 @@ csd %>%
   summarize(Mean_PDL1=mean(`Entire Cell PDL1 (Opal 520) Mean`))
 ```
 
-### Add distance columns
+### Add distance columns to merged data
 
 Nearest-neighbor distances must be computed per-sample because the X/Y
 coordinates reported in cell seg data files are all relative to the top-left
@@ -121,7 +128,6 @@ dim(csd)
 tail(names(csd), 5)
 ```
 
-
 ### Average distance per sample
 
 The next example uses `group_by`, `filter` and `summarize` again to
@@ -135,6 +141,27 @@ csd %>% group_by(`Slide ID`) %>%
   summarize(mean_dist_to_CD68=round(mean(`Distance to CD68+`), 2))
 ```
 
+### Compute `count_within` for each field in merged data
+
+`count_within` is another function that must be computed per field. 
+
+This example uses `dplyr::group_by` and `dplyr::do` to call 
+`count_within` for each field in a merged data file.
+The result is a `data_frame` with one row per radius per field.
+
+Including `Slide ID` in the `group_by` arguments doesn't change the grouping,
+it causes `Slide ID` to be included in the result. This is helpful for 
+further aggregation.
+
+See the section
+[Aggregate counts and means per slide](#aggregate-counts-and-means-per-slide) 
+below for an example which aggregates counts per slide.
+
+```{r}
+csd %>% group_by(`Slide ID`, `Sample Name`) %>% 
+  do(count_within(., from='CK+', to='CD68+', radius=15))
+```
+
 ----
 
 ## Aggregate `count_within` across samples
@@ -142,8 +169,10 @@ csd %>% group_by(`Slide ID`) %>%
 ### Compute counts and averages
 
 Use `count_within_batch` to count cells within a radius for 
-multiple tissue categories, phenotypes and fields. 
-This example counts `CK+` cells with a `CD8+` cell within 10 or 25 microns,
+multiple tissue categories, phenotypes and fields when the fields have not
+been merged.
+
+This example counts `CK+` cells having a `CD8+` cell within 10 or 25 microns,
 and `CK+` cells with a `CD68+` cell within 10 or 25 microns.
 `dplyr::glimpse` gives a compact summary of the data.
 
@@ -163,10 +192,10 @@ counts <- read_csv('count_within_batch.csv')
 glimpse(counts)
 ```
 
-### Aggregate counts and means per sample
+### Aggregate counts and means per slide
 
 Aggregating `from_count`, `to_count` and `from_with`
-across samples is straightforward, it only requires
+across fields is straightforward, it only requires
 simple sums. Aggregating `within_mean` requires computing the underlying 
 count of cells within the radius, summing, and computing a new mean.
 
