@@ -5,6 +5,6 @@ articles:
   aggregation: aggregation.html
   count_touches: count_touches.html
 urls:
-  reference: http://perkinelmer.github.io/phenoptrExamples/reference
-  article: http://perkinelmer.github.io/phenoptrExamples/articles
+  reference: http://pkg.garrickadenbuie.com/phenoptrExamples/reference
+  article: http://pkg.garrickadenbuie.com/phenoptrExamples/articles
 
