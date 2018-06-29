@@ -2,7 +2,7 @@ url: http://perkinelmer.github.io/phenoptrExamples
 
 template:
   params:
-    bootswatch: cerulean
+    bootswatch: cosmo
 
 navbar:
   type: inverse
